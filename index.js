@@ -1,9 +1,12 @@
 import express from 'express';
 import graphqlHTTP from 'express-graphql';
 import schema from './schema';
-import resolvers from './resolvers';
+import mongoose from 'mongoose';
 
 const app = express();
+
+mongoose.Promise = global.Promise;
+mongoose.connect('mongodb://localhost/graphqlfundamentals');
 
 app.get('/', (req, res) => {
 	return res.json({
@@ -11,11 +14,8 @@ app.get('/', (req, res) => {
 	});
 });
 
-const root = resolvers;
-
 app.use('/graphql', graphqlHTTP({
 	schema: schema,
-	rootValue: root,
 	graphiql: true
 }));
 
