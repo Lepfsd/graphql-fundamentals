@@ -6,7 +6,7 @@ const typeDefs = `
 		id: String
 		text: String
 		timeISO: String
-		title: String
+		title: String!
 		deleted: Boolean
 		time: Int
 	}
@@ -28,9 +28,9 @@ const typeDefs = `
 		OTHER
 	}
 	type Query {
-		item: HackerNewsItem 
+		getItem(id: ID!): HackerNewsItem 
 		getUser(id: ID): User
-		users: [User]
+		getUsers: [User]
 	}
 	input HackerNewsInput{
 		id: String
@@ -47,10 +47,13 @@ const typeDefs = `
 		email: String
 		age: Int!
 		gender: Gender
-		items: [HackerNewsInput]
+		items: [ID!]
 	}
 	type Mutation {
 		createUser(input: UserInput) : User
+		updateUser(input: UserInput): User
+		deleteUser(id: ID!): User
+		createItem(input: HackerNewsInput ) : HackerNewsItem
 	}
 `;
 

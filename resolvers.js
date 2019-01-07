@@ -1,28 +1,33 @@
 const users = [];
 let user = {};
+import Item from './models/item';
+import User from './models/user';
+
 export const resolvers = {
 	Query: {
-		item: () => {
-			return {
-				id: '21312112',
-				text: 'This is hacker new Item',
-				timeISO: '2pm saturday',
-				title: 'GraphQL learning',
-				deleted: false
-			}
+		getItem: async (_, {id}) => {
+			return await Item.findOne({_id: id})
 		},
-		getUser: (_, {id}) => {
-			return users.find(user => user.id === id);
+		getUser: async (_, {id}) => {
+			return await User.findById(id);
 		},
-		users: () => {
-			return users;
+		getUsers: async() => {
+			return await User.find().populate('items');
 		},
 	},
 	Mutation: {
-		createUser: (_, {input}, context, info) => {
-			user = input;
-			users.push(user);
-			return user;
+		createUser: async (_, {input}) => {
+			const user = await User.create(input);
+			return await User.findOne({_id: user.id}).populate('items');
+		},
+		createItem: (_, {input}) => {
+			return Promise.resolve(Item.create(input));
+		},
+		updateUser: async (_, {input}) => {
+			return await User.findOneAndUpdate({_id: input.id}, input, {new:true});
+		},
+		deleteUser: async (_, {id}) => {
+			return await User.findOneAndRemove({_id: id});
 		}
 	}
 };
