@@ -22,6 +22,13 @@ const typeDefs = `
 		gender: Gender
 		items: [HackerNewsItem]
 	}
+
+	type Post	 {
+		id: ID
+		title: String
+		text: String
+	}
+
 	enum Gender{
 		MALE
 		FEMALE
@@ -31,6 +38,7 @@ const typeDefs = `
 		getItem(id: ID!): HackerNewsItem 
 		getUser(id: ID): User
 		getUsers: [User]
+		getPosts: [Post]
 	}
 	input HackerNewsInput{
 		id: String
@@ -49,11 +57,18 @@ const typeDefs = `
 		gender: Gender
 		items: [ID!]
 	}
+
+	input PostInput {
+		title: String
+		text: String
+	}
+
 	type Mutation {
 		createUser(input: UserInput) : User
 		updateUser(input: UserInput): User
 		deleteUser(id: ID!): User
 		createItem(input: HackerNewsInput ) : HackerNewsItem
+		createPost(input: PostInput) : Post
 	}
 `;
 

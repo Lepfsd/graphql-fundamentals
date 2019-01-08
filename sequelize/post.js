@@ -1,0 +1,25 @@
+import Sequelize from 'sequelize';
+
+const sequelize = new Sequelize('database', null, null, {
+	dialect: 'sqlite',
+	storage: './sql_db.sqlite'
+});
+
+const Post = sequelize.define('post', {
+	title: {
+		type: Sequelize.STRING
+	},
+	text: {
+		type: Sequelize.STRING
+	}
+});
+
+Post.sync({force:true})
+	.then( () =>{
+		Post.create({
+			title: 'Creating',
+			text: '3. Creating Query to Get All Posts'
+		});
+	});
+
+export default Post;
